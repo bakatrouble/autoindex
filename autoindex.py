@@ -35,9 +35,11 @@ def get_sort_link(current, sort, hidden):
 
 
 def get_file_icon(name):
-    t = guess_type(name)[0].split('/')[0]
-    if t in ['text', 'image', 'audio', 'video']:
-        return t
+    mime = guess_type(name)[0]
+    if mime:
+        t = mime.split('/')[0]
+        if t in ['text', 'image', 'audio', 'video']:
+            return t
     return ''
 
 
