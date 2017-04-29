@@ -4,7 +4,7 @@ from datetime import datetime
 from mimetypes import guess_type
 
 base_hosts = [
-    'drop.217.182.90.36.xip.io'
+    'drop.bakatrouble.pw',
 ]
 
 
