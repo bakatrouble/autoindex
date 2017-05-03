@@ -34,7 +34,7 @@
             <tbody>
                 % if path:
                     <tr>
-                        <td>
+                        <td class="selectable">
                             <a href="../{{ f'?{query}' if query else '' }}">
                                 <i class="level up icon"></i>
                                 ../
@@ -47,7 +47,7 @@
                 % for item in lst:
                     <tr>
                     % if item.isdir:
-                            <td>
+                            <td class="selectable">
                                 <a href="{{ item.name }}/{{ f'?{query}' if query else '' }}">
                                     <i class="folder outline icon"></i>
                                     {{ item.name }}/
@@ -56,7 +56,7 @@
                             <td></td>
                             <td></td>
                     % else:
-                            <td>
+                            <td class="selectable">
                                 <a href="/_/{{ path }}{{ item.name }}" target="_blank">
                                     <i class="file {{ get_file_icon(item.name) }} outline icon"></i>
                                     {{ item.name }} [{{ guess_type(item.name)[0] }}]
