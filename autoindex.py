@@ -5,6 +5,7 @@ from mimetypes import guess_type
 
 base_hosts = [
     'drop.bakatrouble.pw',
+    '127.0.0.1.xip.io:8080',
 ]
 
 

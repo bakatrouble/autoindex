@@ -13,12 +13,12 @@
             position: relative;
         }
         table tbody tr a {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            /*display: block;*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*right: 0;*/
+            /*bottom: 0;*/
         }
     </style>
 </head>
@@ -41,31 +41,34 @@
             </thead>
             <tbody>
                 % if path:
-                    <tr style="cursor: pointer">
-                        <td>
-                            <a href="../{{ f'?{query}' if query else '' }}"></a>
-                            <i class="level up icon"></i>
-                            ../
+                    <tr>
+                        <td class="selectable">
+                            <a href="../{{ f'?{query}' if query else '' }}">
+                                <i class="level up icon"></i>
+                                ../
+                            </a>
                         </td>
                         <td></td>
                         <td></td>
                     </tr>
                 % end
                 % for item in lst:
-                    <tr style="cursor: pointer">
+                    <tr>
                     % if item.isdir:
-                            <td>
-                                <a href="{{ item.name }}/{{ f'?{query}' if query else '' }}"></a>
-                                <i class="folder outline icon"></i>
-                                {{ item.name }}/
+                            <td class="selectable">
+                                <a href="{{ item.name }}/{{ f'?{query}' if query else '' }}">
+                                    <i class="folder outline icon"></i>
+                                    {{ item.name }}/
+                                </a>
                             </td>
                             <td></td>
                             <td></td>
                     % else:
-                            <td>
-                                <a href="/_/{{ path }}{{ item.name }}" target="_blank"></a>
-                                <i class="file {{ get_file_icon(item.name) }} outline icon"></i>
-                                {{ item.name }} [{{ guess_type(item.name)[0] }}]
+                            <td class="selectable">
+                                <a href="/_/{{ path }}{{ item.name }}" target="_blank">
+                                    <i class="file {{ get_file_icon(item.name) }} outline icon"></i>
+                                    {{ item.name }} [{{ guess_type(item.name)[0] }}]
+                                </a>
                             </td>
                             <td><span title="{{ item.size }} byte(s)">{{ format_size(item.size) }}</span></td>
                             <td>{{ format_date(item.created) }}</td>
