@@ -9,16 +9,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/table.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/container.min.css" rel="stylesheet" />
     <style>
-        table tbody tr {
-            position: relative;
-        }
         table tbody tr a {
-            /*display: block;*/
-            /*position: absolute;*/
-            /*top: 0;*/
-            /*left: 0;*/
-            /*right: 0;*/
-            /*bottom: 0;*/
+            display: block;
         }
     </style>
 </head>
@@ -42,7 +34,7 @@
             <tbody>
                 % if path:
                     <tr>
-                        <td class="selectable">
+                        <td>
                             <a href="../{{ f'?{query}' if query else '' }}">
                                 <i class="level up icon"></i>
                                 ../
@@ -55,7 +47,7 @@
                 % for item in lst:
                     <tr>
                     % if item.isdir:
-                            <td class="selectable">
+                            <td>
                                 <a href="{{ item.name }}/{{ f'?{query}' if query else '' }}">
                                     <i class="folder outline icon"></i>
                                     {{ item.name }}/
@@ -64,7 +56,7 @@
                             <td></td>
                             <td></td>
                     % else:
-                            <td class="selectable">
+                            <td>
                                 <a href="/_/{{ path }}{{ item.name }}" target="_blank">
                                     <i class="file {{ get_file_icon(item.name) }} outline icon"></i>
                                     {{ item.name }} [{{ guess_type(item.name)[0] }}]
