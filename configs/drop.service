@@ -1,7 +1,6 @@
 [Unit]
 Description=Web file share service
 After=network.target
-Requires=drop.socket
 
 [Service]
 Type=simple
