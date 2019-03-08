@@ -39,7 +39,7 @@
                     {% with dir=item.is_dir, file=not item.is_dir %}
                     <tr>
                         <td>
-                            <a href="{{ item.link_name }}{% if dir %}{{ query }}{% endif %}" {% if file %}download{% endif %}>
+                            <a href="{{ item.link_name }}{% if dir %}{{ query }}{% endif %}" {% if file %}target="_blank"{% endif %}>
                                 {{ item.icon | safe }} {{ item.display_name }}
                             </a>
                         </td>
