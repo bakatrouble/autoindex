@@ -2,71 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>File list</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/reset.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/site.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/icon.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/table.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/components/container.min.css" rel="stylesheet" />
+    <title>Directory Index: /{{ path }}</title>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+    <link href="/~static/darkly.css" rel="stylesheet" type="text/css" />
+    <link href="/~static/icons.css" rel="stylesheet" type="text/css" />
     <style>
-        table tbody tr a {
+        table tbody tr td {
+            padding: 0 !important;
+        }
+        table tbody tr td a,
+        table tbody tr td span {
             display: block;
+            padding: .3rem;
         }
     </style>
 </head>
 <body>
-    <div class="ui main container" style="padding: 15px 0">
-        <h2>Directory Index - /{{ path }}</h2>
-        <table class="ui selectable unstackable table">
+    <div class="container" style="padding: 15px 0">
+        <h1 class="h3">Directory Index: /{{ path }}</h1>
+        <table class="table table-hover table-bordered table-sm">
             <thead>
                 <tr>
                     <th><a href="{{ get_sort_link(sort, 'name', hidden) }}">
-                        Name {{ !get_sort_icon('name', sort) }}
+                        Name {{ get_sort_icon('name', sort) | safe }}
                     </a></th>
                     <th style="width: 100px;"><a href="{{ get_sort_link(sort, 'size', hidden) }}">
-                        Size {{ !get_sort_icon('size', sort) }}
+                        Size {{ get_sort_icon('size', sort) | safe }}
                     </a></th>
                     <th style="width: 170px;"><a href="{{ get_sort_link(sort, 'created', hidden) }}">
-                        Created {{ !get_sort_icon('created', sort) }}
+                        Created {{ get_sort_icon('created', sort) | safe }}
                     </a></th>
                 </tr>
             </thead>
             <tbody>
-                % if path:
+                {% for item in lst %}
+                    {% with dir=item.is_dir, file=not item.is_dir %}
                     <tr>
-                        <td class="selectable">
-                            <a href="../{{ f'?{query}' if query else '' }}">
-                                <i class="level up icon"></i>
-                                ../
+                        <td>
+                            <a href="{{ item.link_name }}{% if dir %}{{ query }}{% endif %}" {% if file %}download{% endif %}>
+                                {{ item.icon | safe }} {{ item.display_name }}
                             </a>
                         </td>
-                        <td></td>
-                        <td></td>
+                        <td>{% if file %}<span title="{{ item.size }} bytes">{{ item.formatted_size }}</span>{% endif %}</td>
+                        <td><span>{{ item.formatted_date }}</span></td>
                     </tr>
-                % end
-                % for item in lst:
-                    <tr>
-                    % if item.isdir:
-                            <td class="selectable">
-                                <a href="{{ item.name }}/{{ f'?{query}' if query else '' }}">
-                                    <i class="folder outline icon"></i>
-                                    {{ item.name }}/
-                                </a>
-                            </td>
-                            <td></td>
-                            <td></td>
-                    % else:
-                            <td class="selectable">
-                                <a href="/_/{{ path }}{{ item.name }}" target="_blank">
-                                    <i class="file {{ get_file_icon(item.name) }} outline icon"></i>
-                                    {{ item.name }} [{{ guess_type(item.name)[0] }}]
-                                </a>
-                            </td>
-                            <td><span title="{{ item.size }} byte(s)">{{ format_size(item.size) }}</span></td>
-                            <td>{{ format_date(item.created) }}</td>
-                    % end
-                    </tr>
-                % end
+                    {% endwith %}
+                {% endfor %}
             </tbody>
         </table>
     </div>
