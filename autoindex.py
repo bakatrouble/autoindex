@@ -66,4 +66,5 @@ if __name__ == '__main__':
 
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         sock.bind(str(socket_address))
+        socket_address.chmod(0o666)
         app.run(sock=sock, workers=2)
