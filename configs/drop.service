@@ -1,0 +1,16 @@
+[Unit]
+Description=Web file share service
+After=network.target
+Requires=drop.socket
+
+[Service]
+Type=simple
+User=arch
+Group=arch
+WorkingDirectory=/srv/apps/drop
+ExecStart=/srv/apps/drop/venv/bin/python /srv/apps/drop/autoindex.py
+KillSignal=SIGINT
+Environment=ENV=PRODUCTION
+
+[Install]
+WantedBy=multi-user.target
