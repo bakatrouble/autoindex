@@ -65,5 +65,5 @@ if __name__ == '__main__':
                 raise
 
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        sock.bind(socket_address)
+        sock.bind(str(socket_address))
         app.run(sock=sock, workers=2)
