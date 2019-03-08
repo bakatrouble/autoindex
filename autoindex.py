@@ -1,3 +1,4 @@
+import socket
 from os import environ
 
 from sanic import Sanic
@@ -54,4 +55,6 @@ if __name__ == '__main__':
     if DEBUG:
         app.run(host='localhost', port=8080, debug=True, auto_reload=True)
     else:
-        app.run(sock='/tmp/drop.sock', workers=2)
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        sock.bind('/tmp/drop.sock')
+        app.run(sock=sock, workers=2)
