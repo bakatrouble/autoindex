@@ -50,6 +50,10 @@
                 {% endfor %}
             </tbody>
         </table>
+    <small class="d-flex text-muted">
+        <a href="https://t.me/bakatrouble" target="_blank" class="mr-auto">@bakatrouble</a>
+        <a href="https://gitea.bakatrouble.me/bakatrouble/autoindex" target="_blank">Source code</a>
+    </small>
     </div>
 </body>
 </html>
