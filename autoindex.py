@@ -1,5 +1,7 @@
+import os
 import socket
 from os import environ
+from pathlib import Path
 
 from sanic import Sanic
 from sanic.request import Request
@@ -55,6 +57,13 @@ if __name__ == '__main__':
     if DEBUG:
         app.run(host='localhost', port=8080, debug=True, auto_reload=True)
     else:
+        socket_address = Path('/tmp/drop.sock')
+        try:
+            socket_address.unlink()
+        except OSError:
+            if socket_address.exists():
+                raise
+
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        sock.bind('/tmp/drop.sock')
+        sock.bind(socket_address)
         app.run(sock=sock, workers=2)

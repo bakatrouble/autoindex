@@ -3,6 +3,8 @@ Description=Web file share socket
 PartOf=drop.service
 
 [Socket]
+User=arch
+Group=arch
 ListenStream=/tmp/drop.sock
 
 [Install]
