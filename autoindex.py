@@ -13,7 +13,7 @@ from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_di
 
 DEBUG = environ.get('ENV', '').upper() != 'PRODUCTION'
 
-app = Sanic()
+app = Sanic('autoindex')
 app.static('/~static/', '~static/', use_content_range=True, stream_large_files=True)
 j2env = get_j2env(DEBUG)
 
