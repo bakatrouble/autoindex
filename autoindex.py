@@ -18,8 +18,6 @@ app.static('/~static/', '~static/', use_content_range=True, stream_large_files=T
 j2env = get_j2env(DEBUG)
 
 
-@app.route('/')
-@app.route('/<path:path>')
 async def index(request: Request, path=''):
     domain = request.host
     query = f'?{request.query_string}' if request.query_string else ''
@@ -51,6 +49,10 @@ async def index(request: Request, path=''):
         return await file_stream(resolved_path)
 
     abort(404, 'Path was not found')
+
+
+app.get('/')(index)
+app.get('/<path:path>')(index)
 
 
 if __name__ == '__main__':
