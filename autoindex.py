@@ -7,6 +7,7 @@ from sanic import Sanic
 from sanic.request import Request
 from sanic.response import text, html, file_stream, redirect
 from sanic.exceptions import abort
+from sanic_cors import CORS
 
 from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_dir
 
@@ -14,6 +15,7 @@ from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_di
 DEBUG = environ.get('ENV', '').upper() != 'PRODUCTION'
 
 app = Sanic('autoindex')
+cors = CORS(app)
 app.static('/~static/', '~static/', use_content_range=True, stream_large_files=True)
 j2env = get_j2env(DEBUG)
 
