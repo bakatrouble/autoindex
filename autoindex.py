@@ -12,7 +12,7 @@ from sanic_cors import CORS
 from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_dir
 
 
-DEBUG = environ.get('ENV', '').upper() != 'PRODUCTION'
+DEBUG = True  # environ.get('ENV', '').upper() != 'PRODUCTION'
 
 app = Sanic('autoindex')
 cors = CORS(app)
