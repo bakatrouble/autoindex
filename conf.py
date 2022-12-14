@@ -1,6 +1,7 @@
 BASE_HOSTS = [
     'drop.bakatrouble.pw',
     'drop.bakatrouble.me',
+    'drop.home.bakatrouble.me',
     '127.0.0.1.xip.io:8080',
     'localhost:8080',
 ]
