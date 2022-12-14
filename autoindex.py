@@ -6,7 +6,7 @@ from pathlib import Path
 from sanic import Sanic
 from sanic.request import Request
 from sanic.response import text, html, file_stream, redirect
-from sanic.exceptions import abort
+from sanic.exceptions import NotFound
 from sanic_cors import CORS
 
 from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_dir
@@ -50,7 +50,7 @@ async def index(request: Request, path=''):
     elif resolved_path.is_file():
         return await file_stream(resolved_path)
 
-    abort(404, 'Path was not found')
+    raise NotFound('Path was not found')
 
 
 app.get('/')(index)
