@@ -13,7 +13,7 @@ from sanic_ext import Extend
 from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_dir
 
 
-DEBUG = environ.get('ENV', '').upper() != 'PRODUCTION'
+DEBUG = Path('.debug').exists()
 
 app = Sanic('autoindex', strict_slashes=True)
 Extend(app)
