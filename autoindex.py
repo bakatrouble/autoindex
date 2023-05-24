@@ -3,23 +3,26 @@ import socket
 from os import environ
 from pathlib import Path
 
-from sanic import Sanic
+from sanic import Sanic, HTTPResponse
 from sanic.request import Request
 from sanic.response import text, html, file_stream, redirect
-from sanic.exceptions import NotFound
+from sanic.exceptions import NotFound, MethodNotAllowed
 from sanic_cors import CORS
+from sanic_ext import Extend
 
 from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_dir
 
 
 DEBUG = environ.get('ENV', '').upper() != 'PRODUCTION'
 
-app = Sanic('autoindex')
+app = Sanic('autoindex', strict_slashes=True)
+Extend(app)
 cors = CORS(app)
 app.static('/~static/', '~static/', use_content_range=True, stream_large_files=True)
 j2env = get_j2env(DEBUG)
 
 
+@app.get(r'/<path:.*/?>')
 async def index(request: Request, path=''):
     domain = request.host
     query = f'?{request.query_string}' if request.query_string else ''
@@ -48,13 +51,15 @@ async def index(request: Request, path=''):
             query=query,
         ))
     elif resolved_path.is_file():
-        return await file_stream(resolved_path)
+        stream = await file_stream(resolved_path)
+        if request.method == 'HEAD':
+            stream.headers['Content-Length'] = resolved_path.stat().st_size
+            return HTTPResponse(
+                '', status=200, headers=stream.headers, content_type=stream.content_type
+            )
+        return stream
 
     raise NotFound('Path was not found')
-
-
-app.get('/')(index)
-app.get('/<path:path>')(index)
 
 
 if __name__ == '__main__':
