@@ -24,6 +24,7 @@ j2env = get_j2env(DEBUG)
 
 @app.get(r'/<path:.*/?>')
 async def index(request: Request, path=''):
+    path = path.replace('%20', ' ')
     domain = request.host
     query = f'?{request.query_string}' if request.query_string else ''
 
