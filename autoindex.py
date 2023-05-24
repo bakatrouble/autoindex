@@ -2,6 +2,7 @@ import os
 import socket
 from os import environ
 from pathlib import Path
+import logging
 
 from sanic import Sanic, HTTPResponse
 from sanic.request import Request
@@ -24,6 +25,8 @@ j2env = get_j2env(DEBUG)
 
 @app.get(r'/<path:.*/?>')
 async def index(request: Request, path=''):
+    logging.warning(path)
+
     path = path.replace('%20', ' ')
     domain = request.host
     query = f'?{request.query_string}' if request.query_string else ''
