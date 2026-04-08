@@ -1,8 +1,4 @@
-import os
-import socket
-from os import environ
 from pathlib import Path
-import logging
 
 from sanic import Sanic, HTTPResponse
 from sanic.request import Request
@@ -11,6 +7,7 @@ from sanic.exceptions import NotFound, MethodNotAllowed
 from sanic_cors import CORS
 from sanic_ext import Extend
 
+from conf import STATIC_DIR
 from utils import get_j2env, get_sort_icon, get_sort_link, resolve_path, list_dir
 
 
@@ -19,14 +16,13 @@ DEBUG = Path('.debug').exists()
 app = Sanic('autoindex', strict_slashes=True)
 Extend(app)
 cors = CORS(app)
-app.static('/~static/', '~static/', use_content_range=True, stream_large_files=True)
+app.static('/~static/', STATIC_DIR, use_content_range=True, stream_large_files=True)
+print(STATIC_DIR)
 j2env = get_j2env(DEBUG)
 
 
 @app.get(r'/<path:.*/?>')
 async def index(request: Request, path=''):
-    logging.warning(path)
-
     path = path.replace('%20', ' ')
     domain = request.host
     query = f'?{request.query_string}' if request.query_string else ''
@@ -68,16 +64,6 @@ async def index(request: Request, path=''):
 
 if __name__ == '__main__':
     if DEBUG:
-        app.run(host='localhost', port=8080, debug=True, auto_reload=True)
+        app.run(host='0.0.0.0', port=8000, debug=True, auto_reload=True)
     else:
-        socket_address = Path('/tmp/drop.sock')
-        try:
-            socket_address.unlink()
-        except OSError:
-            if socket_address.exists():
-                raise
-
-        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        sock.bind(str(socket_address))
-        socket_address.chmod(0o666)
-        app.run(sock=sock, workers=2)
+        app.run(host='::', port=8000, workers=4)

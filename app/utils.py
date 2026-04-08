@@ -1,17 +1,25 @@
+from dataclasses import dataclass
 from datetime import datetime
 from mimetypes import guess_type
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
-from conf import BASE_HOSTS, SORT_KEYS, ICONS
+from conf import BASE_HOSTS, SORT_KEYS, ICONS, FILES_DIR, SUBDOMAIN_FILES_DIR
 
 
 def icon_html(cls):
     return f'<i class="{cls}"></i>'
 
 
+@dataclass
 class ListEntry:
+    name: str
+    mime: str | None
+    is_dir: bool
+    size: int
+    created: float
+
     def __init__(self, path: Path):
         self.name = path.name
         self.mime = guess_type(self.name)[0]
@@ -59,7 +67,7 @@ class ListEntry:
 
 
 def get_j2env(debug=False):
-    return Environment(loader=FileSystemLoader([Path('.').absolute()]),
+    return Environment(loader=FileSystemLoader([Path(__file__).parent.absolute()]),
                        trim_blocks=True, optimized=debug, cache_size=0 if debug else 400)
 
 
@@ -80,13 +88,13 @@ def resolve_path(domain, path):
     path_parts = [i for i in path.split('/') if i not in ['.', '..']]
     joined_parts = '/'.join(path_parts)
     if domain in BASE_HOSTS:
-        return Path('files').joinpath(*path_parts), joined_parts
+        return FILES_DIR.joinpath(*path_parts), joined_parts
     else:
         for host in BASE_HOSTS:
             if host in domain:
-                return Path('subdomain_files').joinpath(domain[:domain.index(host)-1], *path_parts), joined_parts
+                return SUBDOMAIN_FILES_DIR.joinpath(domain[:domain.index(host) - 1], *path_parts), joined_parts
 
-    raise ValueError
+    raise ValueError()
 
 
 def list_dir(directory: Path, sort, hidden=False, root=True):

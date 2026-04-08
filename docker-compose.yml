@@ -1,0 +1,16 @@
+services:
+  autoindex:
+    build: .
+    volumes:
+      - "./files:/src/files"
+      - "./subdomain_files:/src/subdomain_files"
+    ports:
+      - "8000:8000"
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./app
+          target: /src/app
+          initial_sync: true
+        - action: rebuild
+          path: uv.lock

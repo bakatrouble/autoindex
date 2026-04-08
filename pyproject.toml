@@ -1,17 +1,12 @@
-[tool.poetry]
+[project]
 name = "autoindex"
 version = "0.1.0"
-description = ""
-authors = ["bakatrouble <bakatrouble@gmail.com>"]
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-jinja2 = "^3.1.2"
-sanic = {extras = ["ext"], version = "^23.3.0"}
-sanic-cors = "^2.2.0"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = "==3.12.*"
+dependencies = [
+    "jinja2>=3.1.6",
+    "sanic>=25.12.0",
+    "sanic-cors>=2.2.0",
+    "environs>=15.0.1",
+    "sanic-ext>=25.12.0",
+    "pydantic>=2.12.5",
+]

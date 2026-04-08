@@ -1,11 +1,14 @@
-BASE_HOSTS = [
-    'drop.bakatrouble.pw',
-    'drop.bakatrouble.me',
-    'drop.home.bakatrouble.me',
-    'drop.htpc.lan',
-    '127.0.0.1.xip.io:8080',
-    'localhost:8080',
-]
+from pathlib import Path
+
+from environs import env
+
+env.read_env()
+
+BASE_HOSTS = env.list('BASE_HOSTS', default=['localhost:8000', '127.0.0.1:8000'])
+DEBUG = env.bool('DEBUG', default=False)
+FILES_DIR = Path(__file__).parent.parent / 'files'
+SUBDOMAIN_FILES_DIR = Path(__file__).parent.parent / 'subdomain_files'
+STATIC_DIR = Path(__file__).parent / '~static'
 
 SORT_KEYS = {
     'name': lambda item: (not item.is_dir, item.name.lower()),

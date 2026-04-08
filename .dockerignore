@@ -1,0 +1,5 @@
+/.venv
+/.debug
+/files
+/subdomain_files
+/logs
